@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="calculadora">
+
+         <!--Resultado-->
+         <div id="Resultado"><input type="text" id="display" class="display" disabled></div>
+         
+
+        <!--botoes-->
+            <div id="container">
+                <button class="clear">C</button> <button class="del">Del</button> <button>%</button> <button class="operador">/</button>
+
+                <button>7</button> <button>8</button> <button>9</button> <button class="operador">X</button>
+
+                <button>4</button> <button>5</button> <button>6</button> <button class="operador">-</button>
+
+                <button>1</button> <button>2</button> <button>3</button> <button class="operador">+</button>
+
+               <button>0</button> <button>.</button> <button class="equal">=</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+const display = document.getElementById("display");
+const botoes = document.querySelectorAll("#container button");
+
+botoes.forEach(botao => {
+  botao.addEventListener("click", () => {
+    const valor = botao.textContent.trim();
+
+    
+    if (botao.classList.contains("clear")) {
+      display.value = "";
+      return;
+    }
+
+    if (botao.classList.contains("del")) {
+      display.value = display.value.slice(0, -1);
+      return;
+    }
+
+  
+    if (botao.classList.contains("equal")) {
+      try {
+        let expressao = display.value
+          .replace(/X/g, "*")    
+          .replace(/×/g, "*")    
+          .replace(/x/g, "*")    
+          .replace(/%/g, "/100"); 
+
+        // Calcula de forma segura
+        display.value = Function('"use strict"; return (' + expressao + ')')();
+      } catch {
+        display.value = "Erro";
+      }
+      return;
+    }
+
+    // Números, operadores e ponto entram direto no display
+    display.value += valor;
+  });
+});
+</script>
+</body>
+</html>
